@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>BYU Conference Center Pavilion</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231f3a5f'/%3E%3Cpath d='M6 32 L32 10 L58 32 Z' fill='white'/%3E%3Crect x='14' y='34' width='5' height='18' fill='white'/%3E%3Crect x='45' y='34' width='5' height='18' fill='white'/%3E%3Crect x='10' y='52' width='44' height='4' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #f2f4f7; --card: #ffffff; --border: #d9e0e8; --heading: #1f3a5f;
+    --text: #24313f; --muted: #5b6b7b; --ok: #065f46; --head-bg: #e8edf3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151a20; --card: #1d242c; --border: #313c48; --heading: #cfe0f4;
+      --text: #d5dde5; --muted: #93a1b0; --ok: #7fd7ab; --head-bg: #232c36;
+    }
+  }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif; }
+  a { color: var(--heading); }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 16px 14px 50px; }
+  .head { text-align: center; padding: 12px 0 16px; }
+  .head h1 { margin: 8px 0 2px; font-size: 22px; color: var(--heading);
+             text-wrap: balance; }
+  .head p { margin: 0; color: var(--muted); font-size: 14px; }
+  .card { background: var(--card); border: 1px solid var(--border);
+          border-radius: 8px; padding: 16px 18px; margin-bottom: 18px; }
+  .card h2 { font-size: 16px; margin: 0 0 10px; color: var(--heading); }
+  table { width: 100%; border-collapse: collapse; background: var(--card);
+          border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  th { text-align: left; font-size: 12px; letter-spacing: .04em;
+       text-transform: uppercase; color: var(--muted); background: var(--head-bg);
+       padding: 8px 10px; }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .open { color: var(--ok); }
+  .who { font-weight: 600; }
+  .note { color: var(--muted); font-size: 13px; }
+  .notice { white-space: pre-wrap; margin: 0; }
+  #status { text-align: center; color: var(--muted); padding: 30px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>BYU Conference Center Pavilion</h1>
+    <p>Sunday reservations</p>
+  </div>
+
+  <div class="card" id="noticecard" hidden>
+    <h2>Notices</h2>
+    <p class="notice" id="notice"></p>
+  </div>
+
+  <div class="card" id="contactcard" hidden>
+    <h2>Reservations &amp; changes</h2>
+    <p id="contact"></p>
+  </div>
+
+  <p id="status">Loading the calendar&hellip;</p>
+
+  <table id="cal" hidden>
+    <thead><tr><th>Sunday</th><th>Status</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<script>
+(function () {
+  var SOURCE = "https://byu76thward.pythonanywhere.com/pavilion.json";
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function telHref(phone) {
+    var d = (phone || "").replace(/\D/g, "");
+    if (d.length === 10) d = "1" + d;
+    return d.length >= 7 ? "+" + d : "";
+  }
+
+  function render(data) {
+    if (data.notice) {
+      document.getElementById("notice").textContent = data.notice;
+      document.getElementById("noticecard").hidden = false;
+    }
+    var c = data.contact || {};
+    var p = document.getElementById("contact");
+    p.appendChild(document.createTextNode("To make or change a reservation, contact "));
+    p.appendChild(el("b", "", c.name || "the scheduler"));
+    if (c.phone) {
+      p.appendChild(document.createTextNode(" · "));
+      var href = telHref(c.phone);
+      if (href) {
+        var a = el("a", "", c.phone); a.href = "tel:" + href; p.appendChild(a);
+      } else { p.appendChild(document.createTextNode(c.phone)); }
+    }
+    if (c.email) {
+      p.appendChild(document.createTextNode(" · "));
+      var m = el("a", "", c.email); m.href = "mailto:" + c.email; p.appendChild(m);
+    }
+    p.appendChild(document.createTextNode("."));
+    document.getElementById("contactcard").hidden = false;
+
+    var body = document.getElementById("rows");
+    (data.days || []).forEach(function (d) {
+      var tr = document.createElement("tr");
+      var td1 = el("td", "", d.label); td1.style.whiteSpace = "nowrap";
+      var td2 = document.createElement("td");
+      if (d.reserved_by) {
+        td2.appendChild(el("span", "who", "Reserved — " + d.reserved_by));
+        if (d.note) td2.appendChild(el("div", "note", d.note));
+      } else {
+        td2.appendChild(el("span", "open", "Available"));
+      }
+      tr.appendChild(td1); tr.appendChild(td2); body.appendChild(tr);
+    });
+    document.getElementById("status").hidden = true;
+    document.getElementById("cal").hidden = false;
+  }
+
+  fetch(SOURCE, {cache: "no-store"})
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(render)
+    .catch(function () {
+      document.getElementById("status").textContent =
+        "The calendar can’t be reached right now. Please try again in a few minutes.";
+    });
+})();
+</script>
+</body>
+</html>
