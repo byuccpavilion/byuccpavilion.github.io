@@ -50,6 +50,12 @@
   button:disabled { opacity: .5; cursor: default; }
   td form { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
   td form + form { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+  button.light { background: var(--head-bg); color: var(--text);
+                 border: 1px solid var(--border); }
+  button.small { font-size: 14px; padding: 5px 10px; }
+  td > button.light { margin-top: 8px; }
+  .blockline b { white-space: nowrap; }
+  .blockline input { flex: 1; min-width: 130px; }
   td form input[type=text] { flex: 1; min-width: 130px; }
   .msg { font-size: 13px; margin-left: 6px; }
   .msg.ok { color: var(--ok); }
@@ -232,12 +238,58 @@
     return form;
   }
 
+  function makeBlockForm(td2, s, startOpen) {
+    // one line that blocks the whole day; clearing it and saving reopens the day
+    var reason = (data.blocked || {})[s.date] || "";
+    var form = document.createElement("form");
+    form.className = "blockline";
+    var lab = document.createElement("b");
+    lab.textContent = "Blocked all day:";
+    var inp = document.createElement("input");
+    inp.type = "text"; inp.value = reason;
+    inp.placeholder = "Reason — e.g. General Conference";
+    var btn = document.createElement("button");
+    btn.type = "submit"; btn.textContent = "Save";
+    var msg = document.createElement("span"); msg.className = "msg";
+    form.appendChild(lab); form.appendChild(inp); form.appendChild(btn); form.appendChild(msg);
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      if (!data.blocked) data.blocked = {};
+      var v = inp.value.trim();
+      if (v) data.blocked[s.date] = v;
+      else delete data.blocked[s.date];
+      save((v ? "Block: " : "Unblock: ") + s.label, msg, btn).then(function (ok) {
+        if (ok) renderDay(td2, s);
+      });
+    });
+    if (startOpen) setTimeout(function () { inp.focus(); }, 0);
+    return form;
+  }
+
   function renderDay(td2, s) {
     td2.textContent = "";
+    if ((data.blocked || {})[s.date]) {
+      td2.appendChild(makeBlockForm(td2, s, false));
+      return;
+    }
     for (var i = 0; i < entriesFor(s.date).length; i++) {
       td2.appendChild(makeForm(td2, s, i));
     }
     td2.appendChild(makeForm(td2, s, null));
+    var blk = document.createElement("button");
+    blk.type = "button"; blk.className = "light small";
+    blk.textContent = "Block whole day";
+    blk.addEventListener("click", function () {
+      td2.textContent = "";
+      var f = makeBlockForm(td2, s, true);
+      td2.appendChild(f);
+      var back = document.createElement("button");
+      back.type = "button"; back.className = "light small";
+      back.textContent = "Cancel";
+      back.addEventListener("click", function () { renderDay(td2, s); });
+      f.appendChild(back);
+    });
+    td2.appendChild(blk);
   }
 
   function build() {

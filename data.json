@@ -12,17 +12,14 @@
     "note": "3:00-5:00"
    }
   ],
-  "2026-10-04": [
-   {
-    "by": "General Conference",
-    "note": "Building is closed"
-   }
-  ],
   "2026-10-11": [
    {
     "by": "77th Ward (Veronica)",
     "note": "3.30-5:00"
    }
   ]
+ },
+ "blocked": {
+  "2026-10-04": "General Conference \u2014 building closed"
  }
 }

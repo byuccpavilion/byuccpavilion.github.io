@@ -132,7 +132,10 @@
       var tr = document.createElement("tr");
       var td1 = el("td", "", d.label); td1.style.whiteSpace = "nowrap";
       var td2 = document.createElement("td");
-      if (d.entries.length) {
+      if (d.blocked) {
+        td2.appendChild(el("span", "who", "Not available all day"));
+        td2.appendChild(el("div", "note", d.blocked));
+      } else if (d.entries.length) {
         d.entries.forEach(function (r, i) {
           var wrap = el("div", i ? "entry" : "");
           wrap.appendChild(el("span", "who", "Reserved — " + r.by));
@@ -152,10 +155,12 @@
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (data) {
       var res = data.reservations || {};
+      var blocked = data.blocked || {};
       data.days = sundays(52).map(function (d) {
         var v = res[d.date] || [];
         if (!Array.isArray(v)) v = [v];   // entries saved before the change
-        return {label: d.label, entries: v.filter(function (r) { return r.by || r.note; })};
+        return {label: d.label, blocked: blocked[d.date] || "",
+                entries: v.filter(function (r) { return r.by || r.note; })};
       });
       render(data);
     })
