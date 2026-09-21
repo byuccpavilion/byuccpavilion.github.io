@@ -10,6 +10,10 @@
    {
     "by": "88th Ward - (Moon)",
     "note": "3:00-5:00"
+   },
+   {
+    "by": "52nd Ward (Chen)",
+    "note": "11:00-12:30"
    }
   ],
   "2026-10-11": [
@@ -20,6 +24,6 @@
   ]
  },
  "blocked": {
-  "2026-10-04": "General Conference \u2014 building closed"
+  "2026-10-04": "General Conference — building closed"
  }
 }
