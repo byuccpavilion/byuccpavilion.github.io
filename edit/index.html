@@ -55,6 +55,19 @@
   .msg.err { color: var(--err); }
   #status { text-align: center; color: var(--muted); padding: 30px 0; }
   .row2 { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  /* On a phone each Sunday stacks: the date on top, full-width boxes under it. */
+  @media (max-width: 620px) {
+    table, tbody, tr, td { display: block; width: 100%; box-sizing: border-box; }
+    thead { display: none; }
+    tr { padding: 12px 12px 14px; border-bottom: 1px solid var(--border); }
+    tr:last-child { border-bottom: none; }
+    td { padding: 0; border: none; }
+    td:first-child { font-weight: 600; margin-bottom: 6px; }
+    td form input[type=text] { flex: 1 1 100%; min-width: 0; width: 100%; box-sizing: border-box; }
+    td form button { width: 100%; }
+    .row2 input { flex: 1 1 100%; }
+    .row2 button { width: 100%; }
+  }
 </style>
 </head>
 <body>
