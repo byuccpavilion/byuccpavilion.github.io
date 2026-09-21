@@ -92,7 +92,8 @@
     }
     var c = data.contact || {};
     var p = document.getElementById("contact");
-    p.appendChild(document.createTextNode("To make or change a reservation, contact "));
+    p.appendChild(document.createTextNode("To make or change a reservation, contact:"));
+    p.appendChild(document.createElement("br"));
     p.appendChild(el("b", "", c.name || "the scheduler"));
     if (c.phone) {
       p.appendChild(document.createTextNode(" · "));
@@ -105,7 +106,6 @@
       p.appendChild(document.createTextNode(" · "));
       var m = el("a", "", c.email); m.href = "mailto:" + c.email; p.appendChild(m);
     }
-    p.appendChild(document.createTextNode("."));
     document.getElementById("contactcard").hidden = false;
 
     var body = document.getElementById("rows");
