@@ -5,5 +5,10 @@
   "name": "Valinda Johnston",
   "phone": "(801)372-8649"
  },
- "reservations": {}
+ "reservations": {
+  "2026-09-27": {
+   "by": "88th Ward - (Moon)",
+   "note": "3:00-5:00"
+  }
+ }
 }
