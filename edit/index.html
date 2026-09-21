@@ -49,6 +49,7 @@
            padding: 8px 16px; font: inherit; font-size: 16px; cursor: pointer; }
   button:disabled { opacity: .5; cursor: default; }
   td form { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  td form + form { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
   td form input[type=text] { flex: 1; min-width: 130px; }
   .msg { font-size: 13px; margin-left: 6px; }
   .msg.ok { color: var(--ok); }
@@ -160,6 +161,7 @@
       msgEl.textContent = "Saved."; msgEl.className = "msg ok";
       btn.disabled = false;
       setTimeout(function () { msgEl.textContent = ""; }, 4000);
+      return true;
     }).catch(function (e) {
       btn.disabled = false;
       msgEl.className = "msg err";
@@ -170,6 +172,7 @@
       } else {
         msgEl.textContent = "Could not save — check your connection and try again.";
       }
+      return false;
     });
   }
 
@@ -186,6 +189,57 @@
     return out;
   }
 
+  function entriesFor(dateKey) {
+    var v = (data.reservations || {})[dateKey];
+    if (!v) return [];
+    return Array.isArray(v) ? v : [v];   // entries saved before the list change
+  }
+
+  function makeForm(td2, s, idx) {
+    // idx is which reservation this line edits; null is the empty add-one line
+    var existing = entriesFor(s.date);
+    var r = idx === null ? {} : existing[idx];
+    var form = document.createElement("form");
+    var by = document.createElement("input");
+    by.type = "text"; by.value = r.by || "";
+    by.placeholder = idx !== null ? "Ward or group"
+      : (existing.length ? "Add another reservation" : "Available — add ward or group");
+    var note = document.createElement("input");
+    note.type = "text"; note.placeholder = "Time / details"; note.value = r.note || "";
+    var btn = document.createElement("button");
+    btn.type = "submit"; btn.textContent = "Save";
+    var msg = document.createElement("span"); msg.className = "msg";
+    form.appendChild(by); form.appendChild(note); form.appendChild(btn); form.appendChild(msg);
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var list = entriesFor(s.date).slice();
+      var val = {by: by.value.trim(), note: note.value.trim()};
+      if (idx === null) {
+        if (!val.by && !val.note) return;
+        list.push(val);
+      } else if (val.by || val.note) {
+        list[idx] = val;
+      } else {
+        list.splice(idx, 1);
+      }
+      if (!data.reservations) data.reservations = {};
+      if (list.length) data.reservations[s.date] = list;
+      else delete data.reservations[s.date];
+      save("Reservation: " + s.label, msg, btn).then(function (ok) {
+        if (ok) renderDay(td2, s);
+      });
+    });
+    return form;
+  }
+
+  function renderDay(td2, s) {
+    td2.textContent = "";
+    for (var i = 0; i < entriesFor(s.date).length; i++) {
+      td2.appendChild(makeForm(td2, s, i));
+    }
+    td2.appendChild(makeForm(td2, s, null));
+  }
+
   function build() {
     document.getElementById("notice").value = data.notice || "";
     var c = data.contact || {};
@@ -195,31 +249,11 @@
 
     var body = document.getElementById("rows");
     sundays(52).forEach(function (s) {
-      var r = (data.reservations || {})[s.date] || {};
       var tr = document.createElement("tr");
       var td1 = document.createElement("td");
       td1.textContent = s.label; td1.style.whiteSpace = "nowrap";
       var td2 = document.createElement("td");
-      var form = document.createElement("form");
-      var by = document.createElement("input");
-      by.type = "text"; by.placeholder = "Available — add ward or group"; by.value = r.by || "";
-      var note = document.createElement("input");
-      note.type = "text"; note.placeholder = "Time / details"; note.value = r.note || "";
-      var btn = document.createElement("button");
-      btn.type = "submit"; btn.textContent = "Save";
-      var msg = document.createElement("span"); msg.className = "msg";
-      form.appendChild(by); form.appendChild(note); form.appendChild(btn); form.appendChild(msg);
-      form.addEventListener("submit", function (ev) {
-        ev.preventDefault();
-        if (!data.reservations) data.reservations = {};
-        if (by.value.trim() || note.value.trim()) {
-          data.reservations[s.date] = {by: by.value.trim(), note: note.value.trim()};
-        } else {
-          delete data.reservations[s.date];
-        }
-        save("Reservation: " + s.label, msg, btn);
-      });
-      td2.appendChild(form);
+      renderDay(td2, s);
       tr.appendChild(td1); tr.appendChild(td2); body.appendChild(tr);
     });
 

@@ -6,17 +6,23 @@
   "phone": "(801)372-8649"
  },
  "reservations": {
-  "2026-09-27": {
-   "by": "88th Ward - (Moon)",
-   "note": "3:00-5:00"
-  },
-  "2026-10-04": {
-   "by": "General Conference",
-   "note": "Building is closed"
-  },
-  "2026-10-11": {
-   "by": "77th Ward (Veronica)",
-   "note": "3.30-5:00"
-  }
+  "2026-09-27": [
+   {
+    "by": "88th Ward - (Moon)",
+    "note": "3:00-5:00"
+   }
+  ],
+  "2026-10-04": [
+   {
+    "by": "General Conference",
+    "note": "Building is closed"
+   }
+  ],
+  "2026-10-11": [
+   {
+    "by": "77th Ward (Veronica)",
+    "note": "3.30-5:00"
+   }
+  ]
  }
 }

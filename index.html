@@ -41,6 +41,7 @@
   .open { color: var(--ok); }
   .who { font-weight: 600; }
   .note { color: var(--muted); font-size: 14px; }
+  .entry { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); }
   .notice { white-space: pre-wrap; margin: 0; }
   #status { text-align: center; color: var(--muted); padding: 30px 0; }
 </style>
@@ -131,9 +132,13 @@
       var tr = document.createElement("tr");
       var td1 = el("td", "", d.label); td1.style.whiteSpace = "nowrap";
       var td2 = document.createElement("td");
-      if (d.reserved_by) {
-        td2.appendChild(el("span", "who", "Reserved — " + d.reserved_by));
-        if (d.note) td2.appendChild(el("div", "note", d.note));
+      if (d.entries.length) {
+        d.entries.forEach(function (r, i) {
+          var wrap = el("div", i ? "entry" : "");
+          wrap.appendChild(el("span", "who", "Reserved — " + r.by));
+          if (r.note) wrap.appendChild(el("div", "note", r.note));
+          td2.appendChild(wrap);
+        });
       } else {
         td2.appendChild(el("span", "open", "Available"));
       }
@@ -148,8 +153,9 @@
     .then(function (data) {
       var res = data.reservations || {};
       data.days = sundays(52).map(function (d) {
-        var r = res[d.date] || {};
-        return {label: d.label, reserved_by: r.by || "", note: r.note || ""};
+        var v = res[d.date] || [];
+        if (!Array.isArray(v)) v = [v];   // entries saved before the change
+        return {label: d.label, entries: v.filter(function (r) { return r.by || r.note; })};
       });
       render(data);
     })
