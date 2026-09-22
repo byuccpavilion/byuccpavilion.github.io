@@ -186,11 +186,15 @@
     });
   }
 
-  function sundays(weeks) {
+  function sundays() {
+    // every Sunday from now through the end of April (this school year's
+    // April, or next spring's when we're already past it)
     var out = [], d = new Date();
     d.setHours(12, 0, 0, 0);
     d.setDate(d.getDate() + ((7 - d.getDay()) % 7));
-    for (var i = 0; i < weeks; i++) {
+    var end = new Date(d.getFullYear() + (d.getMonth() >= 4 ? 1 : 0), 3, 30);
+    end.setHours(23, 59, 59, 0);
+    while (d <= end) {
       out.push({date: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
                       "-" + String(d.getDate()).padStart(2, "0"),
                 label: d.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})});
@@ -304,7 +308,7 @@
     document.getElementById("cemail").value = c.email || "";
 
     var body = document.getElementById("rows");
-    sundays(52).forEach(function (s) {
+    sundays().forEach(function (s) {
       var tr = document.createElement("tr");
       var td1 = document.createElement("td");
       td1.textContent = s.label; td1.style.whiteSpace = "nowrap";

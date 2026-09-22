@@ -77,15 +77,18 @@
   // site's own home. Nothing is fetched from anywhere else.
   var SOURCE = "data.json?v=" + Date.now();
 
-  function sundays(weeks) {
+  function sundays() {
+    // every Sunday from now through the end of April (this school year's
+    // April, or next spring's when we're already past it)
     var out = [], d = new Date();
     d.setHours(12, 0, 0, 0);
     d.setDate(d.getDate() + ((7 - d.getDay()) % 7));
-    for (var i = 0; i < weeks; i++) {
-      var key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
-                "-" + String(d.getDate()).padStart(2, "0");
-      out.push({date: key, label: d.toLocaleDateString("en-US",
-        {month: "long", day: "numeric", year: "numeric"})});
+    var end = new Date(d.getFullYear() + (d.getMonth() >= 4 ? 1 : 0), 3, 30);
+    end.setHours(23, 59, 59, 0);
+    while (d <= end) {
+      out.push({date: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") +
+                      "-" + String(d.getDate()).padStart(2, "0"),
+                label: d.toLocaleDateString("en-US", {month: "long", day: "numeric", year: "numeric"})});
       d.setDate(d.getDate() + 7);
     }
     return out;
@@ -156,7 +159,7 @@
     .then(function (data) {
       var res = data.reservations || {};
       var blocked = data.blocked || {};
-      data.days = sundays(52).map(function (d) {
+      data.days = sundays().map(function (d) {
         var v = res[d.date] || [];
         if (!Array.isArray(v)) v = [v];   // entries saved before the change
         return {label: d.label, blocked: blocked[d.date] || "",
