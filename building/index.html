@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Conference Center Sunday Rooms</title>
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="apple-mobile-web-app-title" content="CC Rooms">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231f3a5f'/%3E%3Cpath d='M6 32 L32 10 L58 32 Z' fill='white'/%3E%3Crect x='14' y='34' width='5' height='18' fill='white'/%3E%3Crect x='45' y='34' width='5' height='18' fill='white'/%3E%3Crect x='10' y='52' width='44' height='4' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #f2f4f7; --card: #ffffff; --border: #d9e0e8; --heading: #1f3a5f;
+    --text: #24313f; --muted: #5b6b7b; --head-bg: #e8edf3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151a20; --card: #1d242c; --border: #313c48; --heading: #cfe0f4;
+      --text: #d5dde5; --muted: #93a1b0; --head-bg: #232c36;
+    }
+  }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif; }
+  a { color: var(--heading); }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 14px 50px; }
+  .head { text-align: center; padding: 12px 0 10px; }
+  .head h1 { margin: 8px 0 2px; font-size: 24px; color: var(--heading);
+             text-wrap: balance; }
+  .head p { margin: 0; color: var(--muted); font-size: 14px; }
+  .tabs { display: flex; justify-content: center; gap: 8px; margin: 14px 0 18px; }
+  .tabs button { font: inherit; font-size: 16px; padding: 8px 18px; cursor: pointer;
+                 border: 1px solid var(--border); border-radius: 20px;
+                 background: var(--card); color: var(--text); }
+  .tabs button.on { background: var(--heading); color: #fff; border-color: var(--heading); }
+  .card { background: var(--card); border: 1px solid var(--border);
+          border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+  .card h3 { margin: 0 0 2px; font-size: 17px; color: var(--heading);
+             display: flex; align-items: center; gap: 8px; }
+  .chip { width: 14px; height: 14px; border-radius: 4px; flex: none;
+          border: 1px solid rgba(0,0,0,.15); }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  h2 { font-size: 15px; letter-spacing: .04em; text-transform: uppercase;
+       color: var(--muted); margin: 22px 4px 10px; }
+  ul.uses { list-style: none; margin: 0; padding: 0; }
+  ul.uses li { display: flex; gap: 10px; padding: 5px 0;
+               border-top: 1px solid var(--border); align-items: baseline; }
+  ul.uses li:first-child { border-top: none; }
+  .time { color: var(--muted); font-size: 14px; white-space: nowrap; flex: none;
+          width: 128px; font-variant-numeric: tabular-nums; }
+  .what b { font-weight: 600; }
+  .roomtag { color: var(--muted); }
+  .notice { white-space: pre-wrap; }
+  #status { text-align: center; color: var(--muted); padding: 30px 0; }
+  .foot { text-align: center; color: var(--muted); font-size: 14px; margin-top: 20px; }
+  .confcard { border: 1px solid #c96a6a; }
+  .confcard h3 { color: #b03030; }
+  .conflict { color: #b03030; font-weight: 600; font-size: 13px;
+              border: 1px solid #c96a6a; border-radius: 4px; padding: 0 6px;
+              margin-left: 6px; white-space: nowrap; }
+  @media (prefers-color-scheme: dark) {
+    .confcard h3, .conflict { color: #f1a5a5; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>BYU Conference Center — Sunday Rooms</h1>
+    <p>Room assignments for the 4th and 20th Stakes</p>
+  </div>
+
+  <div class="card" id="noticecard" hidden>
+    <h3>Notices</h3>
+    <p class="notice" id="notice"></p>
+  </div>
+
+  <div class="card confcard" id="confcard" hidden>
+    <h3>Scheduling conflicts</h3>
+    <ul class="uses" id="conflist"></ul>
+  </div>
+
+  <div class="tabs">
+    <button id="tabward" class="on" type="button">By ward</button>
+    <button id="tabroom" type="button">By room</button>
+  </div>
+
+  <p id="status">Loading&hellip;</p>
+  <div id="byward" hidden></div>
+  <div id="byroom" hidden></div>
+
+  <p class="foot">Pavilion &amp; patio reservations are separate:
+    <a href="../">the pavilion calendar</a>.</p>
+</div>
+
+<script>
+(function () {
+  var SOURCE = "../rooms.json?v=" + Date.now();
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined && text !== "") e.textContent = text;
+    return e;
+  }
+
+  function mins(t) {
+    var p = t.split(":"); return (+p[0]) * 60 + (+p[1]);
+  }
+
+  function fmt(t) {
+    var m = mins(t), h = Math.floor(m / 60), mm = m % 60;
+    var ap = h < 12 ? "AM" : "PM"; var h12 = h % 12 || 12;
+    return h12 + ":" + String(mm).padStart(2, "0") + " " + ap;
+  }
+
+  function range(a, b) {
+    var fa = fmt(a), fb = fmt(b);
+    var pa = fa.slice(-2), pb = fb.slice(-2);
+    return (pa === pb ? fa.slice(0, -3) : fa) + "–" + fb;
+  }
+
+  function chip(color) {
+    var c = el("span", "chip"); c.style.background = color; return c;
+  }
+
+  function useKey(ward, u) {
+    return [u.room, u.start, u.end, ward, u.what].join("|");
+  }
+
+  function findConflicts(data) {
+    var all = [];
+    data.stakes.forEach(function (st) {
+      st.wards.forEach(function (w) {
+        w.uses.forEach(function (u) {
+          all.push({room: u.room, s: mins(u.start), e: mins(u.end),
+                    ward: w.name, u: u, key: useKey(w.name, u)});
+        });
+      });
+    });
+    var marked = {}, pairs = [];
+    for (var i = 0; i < all.length; i++) {
+      for (var j = i + 1; j < all.length; j++) {
+        var a = all[i], b = all[j];
+        if (a.room === b.room && a.s < b.e && b.s < a.e) {
+          marked[a.key] = true; marked[b.key] = true;
+          pairs.push("Room " + a.room + ": " + a.ward + " " +
+                     range(a.u.start, a.u.end) + " overlaps " + b.ward + " " +
+                     range(b.u.start, b.u.end));
+        }
+      }
+    }
+    return {marked: marked, pairs: pairs};
+  }
+
+  function renderByWard(data) {
+    var root = document.getElementById("byward");
+    data.stakes.forEach(function (st) {
+      root.appendChild(el("h2", "", st.name));
+      st.wards.forEach(function (w) {
+        var card = el("div", "card");
+        var h = el("h3");
+        h.appendChild(chip(w.color));
+        h.appendChild(document.createTextNode(w.name +
+          (w.bishop ? " — Bishop " + w.bishop : "")));
+        card.appendChild(h);
+        if (w.sacrament)
+          card.appendChild(el("p", "sub", "Sacrament meeting at " + w.sacrament));
+        var ul = el("ul", "uses");
+        w.uses.slice().sort(function (a, b) { return mins(a.start) - mins(b.start); })
+          .forEach(function (u) {
+            var li = document.createElement("li");
+            li.appendChild(el("span", "time", range(u.start, u.end)));
+            var span = el("span", "what");
+            if (u.what) {
+              var b = el("b", "", u.what); span.appendChild(b);
+              span.appendChild(document.createTextNode(" · "));
+            }
+            span.appendChild(el("span", "roomtag", "Room " + u.room));
+            if (conf.marked[useKey(w.name, u)])
+              span.appendChild(el("span", "conflict", "CONFLICT"));
+            li.appendChild(span);
+            ul.appendChild(li);
+          });
+        card.appendChild(ul);
+        root.appendChild(card);
+      });
+    });
+  }
+
+  function renderByRoom(data) {
+    var root = document.getElementById("byroom");
+    var byroom = {};
+    data.stakes.forEach(function (st) {
+      st.wards.forEach(function (w) {
+        w.uses.forEach(function (u) {
+          (byroom[u.room] = byroom[u.room] || []).push(
+            {start: u.start, end: u.end, what: u.what, ward: w.name,
+             color: w.color, key: useKey(w.name, u)});
+        });
+      });
+    });
+    var listed = {};
+    data.rooms.forEach(function (g) {
+      root.appendChild(el("h2", "", g.group));
+      g.list.forEach(function (r) {
+        listed[r.id] = true;
+        var card = el("div", "card");
+        card.appendChild(el("h3", "", "Room " + r.id + (r.info ? " · " + r.info : "")));
+        var uses = (byroom[r.id] || []).sort(function (a, b) {
+          return mins(a.start) - mins(b.start);
+        });
+        if (!uses.length) {
+          card.appendChild(el("p", "sub", "Not scheduled on Sundays"));
+        } else {
+          var ul = el("ul", "uses");
+          uses.forEach(function (u) {
+            var li = document.createElement("li");
+            li.appendChild(el("span", "time", range(u.start, u.end)));
+            var span = el("span", "what");
+            span.appendChild(chip(u.color));
+            span.appendChild(document.createTextNode(" "));
+            var b = el("b", "", u.ward); span.appendChild(b);
+            if (u.what) span.appendChild(document.createTextNode(" · " + u.what));
+            if (conf.marked[u.key]) span.appendChild(el("span", "conflict", "CONFLICT"));
+            li.appendChild(span);
+            ul.appendChild(li);
+          });
+          card.appendChild(ul);
+        }
+        root.appendChild(card);
+      });
+      });
+    // rooms used in the data but missing from the room list still show
+    var extra = Object.keys(byroom).filter(function (id) { return !listed[id]; });
+    if (extra.length) {
+      root.appendChild(el("h2", "", "Other rooms"));
+      extra.sort().forEach(function (id) {
+        var card = el("div", "card");
+        card.appendChild(el("h3", "", "Room " + id));
+        var ul = el("ul", "uses");
+        byroom[id].sort(function (a, b) { return mins(a.start) - mins(b.start); })
+          .forEach(function (u) {
+            var li = document.createElement("li");
+            li.appendChild(el("span", "time", range(u.start, u.end)));
+            var span = el("span", "what");
+            span.appendChild(chip(u.color));
+            span.appendChild(document.createTextNode(" "));
+            span.appendChild(el("b", "", u.ward));
+            if (u.what) span.appendChild(document.createTextNode(" · " + u.what));
+            if (conf.marked[u.key]) span.appendChild(el("span", "conflict", "CONFLICT"));
+            li.appendChild(span);
+            ul.appendChild(li);
+          });
+        card.appendChild(ul);
+        root.appendChild(card);
+      });
+    }
+  }
+
+  function tabs() {
+    var tw = document.getElementById("tabward"), tr = document.getElementById("tabroom");
+    var vw = document.getElementById("byward"), vr = document.getElementById("byroom");
+    tw.addEventListener("click", function () {
+      tw.className = "on"; tr.className = ""; vw.hidden = false; vr.hidden = true;
+    });
+    tr.addEventListener("click", function () {
+      tr.className = "on"; tw.className = ""; vr.hidden = false; vw.hidden = true;
+    });
+  }
+
+  var conf = {marked: {}, pairs: []};
+
+  fetch(SOURCE, {cache: "no-store"})
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      conf = findConflicts(data);
+      if (conf.pairs.length) {
+        var cl = document.getElementById("conflist");
+        conf.pairs.forEach(function (p) {
+          var li = document.createElement("li"); li.textContent = p; cl.appendChild(li);
+        });
+        document.getElementById("confcard").hidden = false;
+      }
+      if (data.note) {
+        document.getElementById("notice").textContent = data.note;
+        document.getElementById("noticecard").hidden = false;
+      }
+      renderByWard(data);
+      renderByRoom(data);
+      tabs();
+      document.getElementById("status").hidden = true;
+      document.getElementById("byward").hidden = false;
+    })
+    .catch(function () {
+      document.getElementById("status").textContent =
+        "The schedule can’t be reached right now. Please try again in a few minutes.";
+    });
+})();
+</script>
+</body>
+</html>

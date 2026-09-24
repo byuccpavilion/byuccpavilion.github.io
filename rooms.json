@@ -1,0 +1,993 @@
+{
+ "note": "",
+ "rooms": [
+  {
+   "group": "Second floor",
+   "list": [
+    {
+     "id": "2254",
+     "info": "Auditorium"
+    },
+    {
+     "id": "2258",
+     "info": "Flat room"
+    },
+    {
+     "id": "2260A/B",
+     "info": "Piano"
+    },
+    {
+     "id": "2265",
+     "info": "RS room, seats 82"
+    },
+    {
+     "id": "2267A/B",
+     "info": "Piano"
+    },
+    {
+     "id": "2269A/B",
+     "info": ""
+    },
+    {
+     "id": "2277A/B",
+     "info": ""
+    },
+    {
+     "id": "2279A/B",
+     "info": ""
+    },
+    {
+     "id": "2285",
+     "info": "EQ room, seats 65"
+    },
+    {
+     "id": "2287",
+     "info": "EQ room, seats 50"
+    },
+    {
+     "id": "2295",
+     "info": "RS room, seats 82"
+    }
+   ]
+  },
+  {
+   "group": "First floor",
+   "list": [
+    {
+     "id": "1159",
+     "info": ""
+    },
+    {
+     "id": "1161",
+     "info": ""
+    },
+    {
+     "id": "1164A/B",
+     "info": ""
+    },
+    {
+     "id": "1169",
+     "info": ""
+    },
+    {
+     "id": "1171",
+     "info": ""
+    },
+    {
+     "id": "1172",
+     "info": "Seats 30"
+    },
+    {
+     "id": "1179",
+     "info": ""
+    },
+    {
+     "id": "1181",
+     "info": ""
+    },
+    {
+     "id": "1184",
+     "info": "Seats 65"
+    },
+    {
+     "id": "1187",
+     "info": "Seats 32"
+    },
+    {
+     "id": "1188",
+     "info": "Overflow, seats 50"
+    },
+    {
+     "id": "1189",
+     "info": "Seats 32"
+    },
+    {
+     "id": "1193",
+     "info": ""
+    },
+    {
+     "id": "1195",
+     "info": ""
+    }
+   ]
+  },
+  {
+   "group": "Ballrooms",
+   "list": [
+    {
+     "id": "Ballroom North B/C",
+     "info": ""
+    },
+    {
+     "id": "Ballroom South A",
+     "info": "Seats ~90"
+    }
+   ]
+  },
+  {
+   "group": "Harman Building (HCEB)",
+   "list": [
+    {
+     "id": "102B-HCEB",
+     "info": ""
+    },
+    {
+     "id": "102D-HCEB",
+     "info": ""
+    },
+    {
+     "id": "102E-HCEB",
+     "info": ""
+    },
+    {
+     "id": "102H-HCEB",
+     "info": ""
+    }
+   ]
+  }
+ ],
+ "stakes": [
+  {
+   "name": "20th Stake",
+   "wards": [
+    {
+     "name": "76th Ward",
+     "bishop": "Daines",
+     "color": "#8fbe88",
+     "sacrament": "9:00 AM",
+     "uses": [
+      {
+       "room": "2269A/B",
+       "start": "8:00",
+       "end": "8:45",
+       "what": "Bishopric"
+      },
+      {
+       "room": "2277A/B",
+       "start": "8:00",
+       "end": "8:45",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2260A/B",
+       "start": "8:45",
+       "end": "10:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2267A/B",
+       "start": "10:00",
+       "end": "10:30",
+       "what": "EQ1"
+      },
+      {
+       "room": "2267A/B",
+       "start": "10:30",
+       "end": "11:00",
+       "what": "SS1"
+      },
+      {
+       "room": "2269A/B",
+       "start": "10:00",
+       "end": "10:30",
+       "what": "RS1"
+      },
+      {
+       "room": "2269A/B",
+       "start": "10:30",
+       "end": "11:00",
+       "what": "SS2"
+      },
+      {
+       "room": "2277A/B",
+       "start": "10:00",
+       "end": "10:30",
+       "what": "RS2"
+      },
+      {
+       "room": "2277A/B",
+       "start": "10:30",
+       "end": "11:00",
+       "what": "SS3"
+      },
+      {
+       "room": "1164A/B",
+       "start": "11:00",
+       "end": "13:30",
+       "what": "Interviews"
+      },
+      {
+       "room": "1171",
+       "start": "11:00",
+       "end": "13:30",
+       "what": "Interviews"
+      }
+     ]
+    },
+    {
+     "name": "56th Ward",
+     "bishop": "Nielson",
+     "color": "#eba064",
+     "sacrament": "10:15 AM",
+     "uses": [
+      {
+       "room": "1195",
+       "start": "8:00",
+       "end": "10:00",
+       "what": "Meetings"
+      },
+      {
+       "room": "2260A/B",
+       "start": "10:00",
+       "end": "11:15",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2267A/B",
+       "start": "11:15",
+       "end": "11:45",
+       "what": "EQ1"
+      },
+      {
+       "room": "2267A/B",
+       "start": "11:45",
+       "end": "12:15",
+       "what": "SS1"
+      },
+      {
+       "room": "2277A/B",
+       "start": "11:15",
+       "end": "11:45",
+       "what": "RS2"
+      },
+      {
+       "room": "2277A/B",
+       "start": "11:45",
+       "end": "12:15",
+       "what": "SS3"
+      },
+      {
+       "room": "1195",
+       "start": "12:30",
+       "end": "14:45",
+       "what": "Interviews"
+      }
+     ]
+    },
+    {
+     "name": "46th Ward",
+     "bishop": "Cahoon",
+     "color": "#9aa0a6",
+     "sacrament": "11:30 AM",
+     "uses": [
+      {
+       "room": "2279A/B",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "Mission & temple"
+      },
+      {
+       "room": "1164A/B",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "1171",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "Bishopric"
+      },
+      {
+       "room": "2260A/B",
+       "start": "11:15",
+       "end": "12:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2267A/B",
+       "start": "12:30",
+       "end": "13:00",
+       "what": "EQ1"
+      },
+      {
+       "room": "2267A/B",
+       "start": "13:00",
+       "end": "13:30",
+       "what": "SS1"
+      },
+      {
+       "room": "2277A/B",
+       "start": "12:30",
+       "end": "13:00",
+       "what": "RS1 and 2"
+      },
+      {
+       "room": "2277A/B",
+       "start": "13:00",
+       "end": "13:30",
+       "what": "SS2"
+      },
+      {
+       "room": "1164A/B",
+       "start": "13:30",
+       "end": "15:30",
+       "what": "Interviews"
+      },
+      {
+       "room": "1171",
+       "start": "13:30",
+       "end": "15:30",
+       "what": "Interviews"
+      }
+     ]
+    },
+    {
+     "name": "57th Ward",
+     "bishop": "Webb",
+     "color": "#7aa5d8",
+     "sacrament": "12:45 PM",
+     "uses": [
+      {
+       "room": "2279A/B",
+       "start": "8:45",
+       "end": "10:00",
+       "what": "Interviews"
+      },
+      {
+       "room": "1195",
+       "start": "10:00",
+       "end": "10:45",
+       "what": "Interviews"
+      },
+      {
+       "room": "1195",
+       "start": "10:45",
+       "end": "11:45",
+       "what": "Bishopric"
+      },
+      {
+       "room": "102D-HCEB",
+       "start": "10:45",
+       "end": "11:30",
+       "what": "RS & EQ presidencies"
+      },
+      {
+       "room": "2269A/B",
+       "start": "11:15",
+       "end": "12:15",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2260A/B",
+       "start": "12:30",
+       "end": "13:45",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2260A/B",
+       "start": "13:45",
+       "end": "14:15",
+       "what": "RS1"
+      },
+      {
+       "room": "2260A/B",
+       "start": "14:15",
+       "end": "14:45",
+       "what": "SS1"
+      },
+      {
+       "room": "2267A/B",
+       "start": "13:45",
+       "end": "14:15",
+       "what": "EQ1"
+      },
+      {
+       "room": "2267A/B",
+       "start": "14:15",
+       "end": "14:45",
+       "what": "SS2"
+      },
+      {
+       "room": "2269A/B",
+       "start": "14:15",
+       "end": "14:45",
+       "what": "SS3"
+      },
+      {
+       "room": "2277A/B",
+       "start": "13:45",
+       "end": "14:15",
+       "what": "RS2"
+      },
+      {
+       "room": "2277A/B",
+       "start": "14:15",
+       "end": "14:45",
+       "what": "SS4"
+      },
+      {
+       "room": "2269A/B",
+       "start": "14:45",
+       "end": "16:00",
+       "what": "Interviews"
+      },
+      {
+       "room": "2277A/B",
+       "start": "14:45",
+       "end": "16:00",
+       "what": "Interviews"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "4th Stake",
+   "wards": [
+    {
+     "name": "52nd Ward",
+     "bishop": "Chenn",
+     "color": "#9b59d0",
+     "sacrament": "9:00 AM",
+     "uses": [
+      {
+       "room": "1189",
+       "start": "7:30",
+       "end": "8:30",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2254",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2295",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "RS"
+      },
+      {
+       "room": "2287",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1159",
+       "start": "11:00",
+       "end": "14:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "45th Ward",
+     "bishop": "Larson",
+     "color": "#c39bd3",
+     "sacrament": "9:00 AM",
+     "uses": [
+      {
+       "room": "1187",
+       "start": "7:30",
+       "end": "8:30",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2258",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2265",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "RS"
+      },
+      {
+       "room": "1184",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1169",
+       "start": "11:00",
+       "end": "12:30",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "73rd Ward",
+     "bishop": "Dial",
+     "color": "#e67e22",
+     "sacrament": "9:00 AM",
+     "uses": [
+      {
+       "room": "1172",
+       "start": "7:30",
+       "end": "8:30",
+       "what": "Ward Council"
+      },
+      {
+       "room": "Ballroom North B/C",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "Ballroom South A",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "RS"
+      },
+      {
+       "room": "2285",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1161",
+       "start": "11:00",
+       "end": "14:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "74th Ward",
+     "bishop": "Price",
+     "color": "#444444",
+     "sacrament": "10:30 AM",
+     "uses": [
+      {
+       "room": "1179",
+       "start": "7:30",
+       "end": "9:00",
+       "what": ""
+      },
+      {
+       "room": "1189",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2254",
+       "start": "10:30",
+       "end": "11:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2295",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "RS"
+      },
+      {
+       "room": "2287",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "EQ"
+      },
+      {
+       "room": "1179",
+       "start": "12:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "54th Ward",
+     "bishop": "Blickenstaff",
+     "color": "#48b74d",
+     "sacrament": "10:30 AM",
+     "uses": [
+      {
+       "room": "1181",
+       "start": "7:30",
+       "end": "8:30",
+       "what": ""
+      },
+      {
+       "room": "1187",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2258",
+       "start": "10:30",
+       "end": "11:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2265",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "RS"
+      },
+      {
+       "room": "1184",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "EQ"
+      },
+      {
+       "room": "1181",
+       "start": "12:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "50th Ward",
+     "bishop": "Pack",
+     "color": "#b08c1e",
+     "sacrament": "10:30 AM",
+     "uses": [
+      {
+       "room": "1193",
+       "start": "7:30",
+       "end": "8:30",
+       "what": ""
+      },
+      {
+       "room": "1172",
+       "start": "9:00",
+       "end": "10:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "Ballroom North B/C",
+       "start": "10:30",
+       "end": "11:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "Ballroom South A",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "RS"
+      },
+      {
+       "room": "2285",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "EQ"
+      },
+      {
+       "room": "1193",
+       "start": "12:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "44th Ward",
+     "bishop": "Murphy",
+     "color": "#d4b62c",
+     "sacrament": "12:00 PM",
+     "uses": [
+      {
+       "room": "1159",
+       "start": "8:00",
+       "end": "10:00",
+       "what": ""
+      },
+      {
+       "room": "1189",
+       "start": "11:00",
+       "end": "12:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2254",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2295",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "RS"
+      },
+      {
+       "room": "2287",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1159",
+       "start": "14:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "55th Ward",
+     "bishop": "Durtschi",
+     "color": "#3fb6c9",
+     "sacrament": "12:00 PM",
+     "uses": [
+      {
+       "room": "1161",
+       "start": "8:00",
+       "end": "10:00",
+       "what": ""
+      },
+      {
+       "room": "1187",
+       "start": "11:00",
+       "end": "12:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2258",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2265",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "RS"
+      },
+      {
+       "room": "1184",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1161",
+       "start": "14:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "47th Ward",
+     "bishop": "Miller",
+     "color": "#d9705f",
+     "sacrament": "12:00 PM",
+     "uses": [
+      {
+       "room": "1169",
+       "start": "8:00",
+       "end": "10:00",
+       "what": ""
+      },
+      {
+       "room": "1172",
+       "start": "11:00",
+       "end": "12:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "Ballroom North B/C",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "Ballroom South A",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "RS"
+      },
+      {
+       "room": "2285",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "EQ"
+      },
+      {
+       "room": "1169",
+       "start": "14:30",
+       "end": "16:00",
+       "what": ""
+      }
+     ]
+    },
+    {
+     "name": "88th Ward",
+     "bishop": "Lindquist",
+     "color": "#2b4ec9",
+     "sacrament": "1:30 PM",
+     "uses": [
+      {
+       "room": "1179",
+       "start": "9:00",
+       "end": "12:00",
+       "what": ""
+      },
+      {
+       "room": "1189",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2254",
+       "start": "13:30",
+       "end": "14:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2254",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "RS"
+      },
+      {
+       "room": "1184",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "EQ"
+      }
+     ]
+    },
+    {
+     "name": "77th Ward",
+     "bishop": "Broadbent",
+     "color": "#e0a878",
+     "sacrament": "1:30 PM",
+     "uses": [
+      {
+       "room": "1181",
+       "start": "8:30",
+       "end": "12:00",
+       "what": ""
+      },
+      {
+       "room": "1187",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "2258",
+       "start": "13:30",
+       "end": "14:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "2258",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "RS"
+      },
+      {
+       "room": "2287",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "EQ"
+      }
+     ]
+    },
+    {
+     "name": "51st Ward",
+     "bishop": "Norton",
+     "color": "#2e7d3a",
+     "sacrament": "1:30 PM",
+     "uses": [
+      {
+       "room": "1193",
+       "start": "8:30",
+       "end": "12:00",
+       "what": ""
+      },
+      {
+       "room": "1172",
+       "start": "12:00",
+       "end": "13:00",
+       "what": "Ward Council"
+      },
+      {
+       "room": "Ballroom North B/C",
+       "start": "13:30",
+       "end": "14:30",
+       "what": "Sacrament meeting"
+      },
+      {
+       "room": "Ballroom North B/C",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "RS"
+      },
+      {
+       "room": "Ballroom South A",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "EQ"
+      }
+     ]
+    },
+    {
+     "name": "Any ward (shared)",
+     "bishop": "",
+     "color": "#8d99a6",
+     "sacrament": "",
+     "uses": [
+      {
+       "room": "1188",
+       "start": "10:00",
+       "end": "11:00",
+       "what": "SS/RS/EQ/Overflow"
+      },
+      {
+       "room": "1188",
+       "start": "11:30",
+       "end": "12:30",
+       "what": "SS/RS/EQ/Overflow"
+      },
+      {
+       "room": "1188",
+       "start": "13:00",
+       "end": "14:00",
+       "what": "SS/RS/EQ/Overflow"
+      },
+      {
+       "room": "1188",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "SS/RS/EQ/Overflow"
+      },
+      {
+       "room": "2295",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "Overflow"
+      },
+      {
+       "room": "2265",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "Choir"
+      },
+      {
+       "room": "2285",
+       "start": "14:30",
+       "end": "15:30",
+       "what": "SS/RS/EQ/Overflow"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
