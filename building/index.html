@@ -152,6 +152,10 @@
     var c = el("span", "chip"); c.style.background = color; return c;
   }
 
+  function roomLabel(id) {
+    return /^\d/.test(id) ? "Room " + id : id;
+  }
+
   function useKey(ward, u) {
     return [u.room, u.start, u.end, ward, u.what].join("|");
   }
@@ -172,7 +176,7 @@
         var a = all[i], b = all[j];
         if (a.room === b.room && a.s < b.e && b.s < a.e) {
           marked[a.key] = true; marked[b.key] = true;
-          pairs.push("Room " + a.room + ": " + a.ward + " " +
+          pairs.push(roomLabel(a.room) + ": " + a.ward + " " +
                      range(a.u.start, a.u.end) + " overlaps " + b.ward + " " +
                      range(b.u.start, b.u.end));
         }
@@ -204,7 +208,7 @@
               var b = el("b", "", u.what); span.appendChild(b);
               span.appendChild(document.createTextNode(" · "));
             }
-            span.appendChild(el("span", "roomtag", "Room " + u.room));
+            span.appendChild(el("span", "roomtag", roomLabel(u.room)));
             if (conf.marked[useKey(w.name, u)])
               span.appendChild(el("span", "conflict", "CONFLICT"));
             li.appendChild(span);
@@ -234,7 +238,7 @@
       g.list.forEach(function (r) {
         listed[r.id] = true;
         var card = el("div", "card");
-        card.appendChild(el("h3", "", "Room " + r.id + (r.info ? " · " + r.info : "")));
+        card.appendChild(el("h3", "", roomLabel(r.id) + (r.info ? " · " + r.info : "")));
         var uses = (byroom[r.id] || []).sort(function (a, b) {
           return mins(a.start) - mins(b.start);
         });
@@ -265,7 +269,7 @@
       root.appendChild(el("h2", "", "Other rooms"));
       extra.sort().forEach(function (id) {
         var card = el("div", "card");
-        card.appendChild(el("h3", "", "Room " + id));
+        card.appendChild(el("h3", "", roomLabel(id)));
         var ul = el("ul", "uses");
         byroom[id].sort(function (a, b) { return mins(a.start) - mins(b.start); })
           .forEach(function (u) {
@@ -289,7 +293,7 @@
   function showPop(cell, roomId, seg) {
     var pop = document.getElementById("pop");
     pop.textContent = "";
-    pop.appendChild(el("div", "r", "Room " + roomId));
+    pop.appendChild(el("div", "r", roomLabel(roomId)));
     seg.items.forEach(function (u) {
       var it = el("div", "it");
       it.appendChild(chip(u.color));

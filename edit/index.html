@@ -155,29 +155,41 @@
     return btoa(bin);
   }
 
-  function save(what, msgEl, btn) {
+  function loadFile() {
+    return fetch(API + "?v=" + Date.now(), {headers: hdrs(), cache: "no-store"})
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { return {sha: j.sha, data: JSON.parse(decode(j.content))}; });
+  }
+
+  // Every save fetches the newest copy first and applies the change to THAT,
+  // so a page left open for hours can never be refused or overwrite anyone.
+  function save(what, msgEl, btn, mutate, retried) {
     btn.disabled = true;
     msgEl.textContent = "Saving…"; msgEl.className = "msg";
-    return fetch(API, {
-      method: "PUT", headers: hdrs(),
-      body: JSON.stringify({message: what, sha: sha,
-                            content: encode(JSON.stringify(data, null, 1))})
-    }).then(function (r) {
-      if (r.status === 409) throw new Error("conflict");
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    }).then(function (j) {
-      sha = j.content.sha;
-      msgEl.textContent = "Saved."; msgEl.className = "msg ok";
-      btn.disabled = false;
-      setTimeout(function () { msgEl.textContent = ""; }, 4000);
-      return true;
+    return loadFile().then(function (f) {
+      mutate(f.data);
+      return fetch(API, {
+        method: "PUT", headers: hdrs(),
+        body: JSON.stringify({message: what, sha: f.sha,
+                              content: encode(JSON.stringify(f.data, null, 1))})
+      }).then(function (r) {
+        if (r.status === 409) throw new Error("conflict");
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      }).then(function (j) {
+        sha = j.content.sha; data = f.data;
+        msgEl.textContent = "Saved."; msgEl.className = "msg ok";
+        btn.disabled = false;
+        setTimeout(function () { msgEl.textContent = ""; }, 4000);
+        return true;
+      });
     }).catch(function (e) {
+      if (String(e.message) === "conflict" && !retried) {
+        return save(what, msgEl, btn, mutate, true);
+      }
       btn.disabled = false;
       msgEl.className = "msg err";
-      if (String(e.message) === "conflict") {
-        msgEl.textContent = "Someone else saved just now — reload this page and redo your change.";
-      } else if (String(e.message) === "401" || String(e.message) === "403" || String(e.message) === "404") {
+      if (String(e.message) === "401" || String(e.message) === "403" || String(e.message) === "404") {
         msgEl.textContent = "This editing link is no longer valid.";
       } else {
         msgEl.textContent = "Could not save — check your connection and try again.";
@@ -226,20 +238,19 @@
     form.appendChild(by); form.appendChild(note); form.appendChild(btn); form.appendChild(msg);
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
-      var list = entriesFor(s.date).slice();
-      var val = {by: by.value.trim(), note: note.value.trim()};
-      if (idx === null) {
-        if (!val.by && !val.note) return;
-        list.push(val);
-      } else if (val.by || val.note) {
-        list[idx] = val;
-      } else {
-        list.splice(idx, 1);
-      }
-      if (!data.reservations) data.reservations = {};
-      if (list.length) data.reservations[s.date] = list;
-      else delete data.reservations[s.date];
-      save("Reservation: " + s.label, msg, btn).then(function (ok) {
+      // the day's list is whatever the boxes on screen now say
+      var list = [];
+      Array.prototype.forEach.call(td2.querySelectorAll("form"), function (f) {
+        if (f.classList.contains("blockline")) return;
+        var ins = f.querySelectorAll("input");
+        var b = ins[0].value.trim(), n = ins[1].value.trim();
+        if (b || n) list.push({by: b, note: n});
+      });
+      save("Reservation: " + s.label, msg, btn, function (fresh) {
+        if (!fresh.reservations) fresh.reservations = {};
+        if (list.length) fresh.reservations[s.date] = list;
+        else delete fresh.reservations[s.date];
+      }).then(function (ok) {
         if (ok) renderDay(td2, s);
       });
     });
@@ -262,11 +273,12 @@
     form.appendChild(lab); form.appendChild(inp); form.appendChild(btn); form.appendChild(msg);
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
-      if (!data.blocked) data.blocked = {};
       var v = inp.value.trim();
-      if (v) data.blocked[s.date] = v;
-      else delete data.blocked[s.date];
-      save((v ? "Block: " : "Unblock: ") + s.label, msg, btn).then(function (ok) {
+      save((v ? "Block: " : "Unblock: ") + s.label, msg, btn, function (fresh) {
+        if (!fresh.blocked) fresh.blocked = {};
+        if (v) fresh.blocked[s.date] = v;
+        else delete fresh.blocked[s.date];
+      }).then(function (ok) {
         if (ok) renderDay(td2, s);
       });
     });
@@ -318,14 +330,16 @@
     });
 
     document.getElementById("savenotice").addEventListener("click", function () {
-      data.notice = document.getElementById("notice").value.trim();
-      save("Notice", document.getElementById("noticemsg"), this);
+      var v = document.getElementById("notice").value.trim();
+      save("Notice", document.getElementById("noticemsg"), this,
+        function (fresh) { fresh.notice = v; });
     });
     document.getElementById("savecontact").addEventListener("click", function () {
-      data.contact = {name: document.getElementById("cname").value.trim(),
-                      phone: document.getElementById("cphone").value.trim(),
-                      email: document.getElementById("cemail").value.trim()};
-      save("Contact", document.getElementById("contactmsg"), this);
+      var c = {name: document.getElementById("cname").value.trim(),
+               phone: document.getElementById("cphone").value.trim(),
+               email: document.getElementById("cemail").value.trim()};
+      save("Contact", document.getElementById("contactmsg"), this,
+        function (fresh) { fresh.contact = c; });
     });
 
     status.hidden = true;

@@ -133,6 +133,8 @@
     return btoa(bin);
   }
 
+  function roomLabel(id) { return /^\d/.test(id) ? "Room " + id : id; }
+
   function mins(t) { var p = t.split(":"); return (+p[0]) * 60 + (+p[1]); }
   function fmt(t) {
     var m = mins(t), h = Math.floor(m / 60), mm = m % 60;
@@ -151,11 +153,11 @@
   }
 
   // every use in the plan, except the ward being re-saved
-  function otherUses(skipWard) {
+  function otherUses(dataset, skipName) {
     var out = [];
-    data.stakes.forEach(function (st) {
+    dataset.stakes.forEach(function (st) {
       st.wards.forEach(function (w) {
-        if (w === skipWard) return;
+        if (w.name === skipName) return;
         w.uses.forEach(function (u) {
           out.push({room: u.room, s: mins(u.start), e: mins(u.end),
                     ward: w.name, start: u.start, end: u.end});
@@ -165,8 +167,8 @@
     return out;
   }
 
-  function conflictsFor(uses, skipWard, wardName) {
-    var others = otherUses(skipWard), problems = [];
+  function conflictsFor(dataset, uses, skipName, wardName) {
+    var others = otherUses(dataset, skipName), problems = [];
     uses.forEach(function (u, i) {
       var s = mins(u.start), e = mins(u.end);
       if (e <= s) {
@@ -175,7 +177,7 @@
       }
       others.forEach(function (o) {
         if (o.room === u.room && s < o.e && o.s < e)
-          problems.push("Room " + u.room + " is already taken " + range(o.start, o.end) +
+          problems.push(roomLabel(u.room) + " is already taken " + range(o.start, o.end) +
                         " by " + o.ward + " — your " + range(u.start, u.end) + " overlaps it.");
       });
       uses.forEach(function (v, j) {
@@ -201,7 +203,7 @@
       for (var j = i + 1; j < all.length; j++) {
         var a = all[i], b = all[j];
         if (a.room === b.room && a.s < b.e && b.s < a.e)
-          out.push("Room " + a.room + ": " + a.ward + " " + range(a.start, a.end) +
+          out.push(roomLabel(a.room) + ": " + a.ward + " " + range(a.start, a.end) +
                    " overlaps " + b.ward + " " + range(b.start, b.end));
       }
     return out;
@@ -214,32 +216,55 @@
     card.hidden = !list.length;
   }
 
-  function save(what, msgEl, btn) {
+  function loadFile() {
+    return fetch(API + "?v=" + Date.now(), {headers: hdrs(), cache: "no-store"})
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { return {sha: j.sha, data: JSON.parse(decode(j.content))}; });
+  }
+
+  // Every save fetches the newest copy first and applies the change to THAT,
+  // so a page that has been open a while can never overwrite or be refused.
+  function saveWith(label, msgEl, btn, mutate, retried) {
     if (btn) btn.disabled = true;
     msgEl.textContent = "Saving…"; msgEl.className = "msg";
-    return fetch(API, {
-      method: "PUT", headers: hdrs(),
-      body: JSON.stringify({message: what, sha: sha,
-                            content: encode(JSON.stringify(data, null, 1))})
-    }).then(function (r) {
-      if (r.status === 409) throw new Error("conflict");
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    }).then(function (j) {
-      sha = j.content.sha;
-      msgEl.textContent = "Saved."; msgEl.className = "msg ok";
-      if (btn) btn.disabled = false;
-      setTimeout(function () { msgEl.textContent = ""; }, 4000);
-      refreshConflictCard();
-      return true;
+    return loadFile().then(function (f) {
+      var err = mutate(f.data);
+      if (err) {
+        msgEl.className = "msg err"; msgEl.textContent = err;
+        if (btn) btn.disabled = false;
+        return false;
+      }
+      return fetch(API, {
+        method: "PUT", headers: hdrs(),
+        body: JSON.stringify({message: label, sha: f.sha,
+                              content: encode(JSON.stringify(f.data, null, 1))})
+      }).then(function (r) {
+        if (r.status === 409) throw new Error("conflict");
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      }).then(function (j) {
+        sha = j.content.sha; data = f.data;
+        msgEl.textContent = "Saved."; msgEl.className = "msg ok";
+        if (btn) btn.disabled = false;
+        setTimeout(function () { msgEl.textContent = ""; }, 4000);
+        refreshConflictCard();
+        return true;
+      });
     }).catch(function (e) {
+      if (String(e.message) === "conflict" && !retried) {
+        return saveWith(label, msgEl, btn, mutate, true);
+      }
       if (btn) btn.disabled = false;
       msgEl.className = "msg err";
-      msgEl.textContent = String(e.message) === "conflict"
-        ? "Someone else saved just now — reload this page and redo your change."
-        : "Could not save — check your connection and try again.";
+      msgEl.textContent = "Could not save — check your connection and try again.";
       return false;
     });
+  }
+
+  function findStake(dataset, name) {
+    for (var i = 0; i < dataset.stakes.length; i++)
+      if (dataset.stakes[i].name === name) return dataset.stakes[i];
+    return null;
   }
 
   function useRow(u) {
@@ -265,6 +290,7 @@
   }
 
   function wardCard(stake, w) {
+    var origName = w.name;   // how this ward is found in the newest copy
     var card = document.createElement("div"); card.className = "card";
     var flds = document.createElement("div"); flds.className = "fields";
     function fld(label, val, width) {
@@ -304,11 +330,12 @@
     removeBtn.type = "button"; removeBtn.className = "danger small";
     removeBtn.textContent = "Remove this ward";
     removeBtn.addEventListener("click", function () {
-      if (!confirm("Remove " + (w.name || "this ward") + " and all its bookings?")) return;
-      stake.wards.splice(stake.wards.indexOf(w), 1);
-      save("Remove ward: " + w.name, msg, null).then(function (ok) {
-        if (ok) card.remove();
-      });
+      if (!confirm("Remove " + (origName || "this ward") + " and all its bookings?")) return;
+      saveWith("Remove ward: " + origName, msg, null, function (fresh) {
+        var stF = findStake(fresh, stake.name);
+        if (stF) stF.wards = stF.wards.filter(function (x) { return x.name !== origName; });
+        return null;
+      }).then(function (ok) { if (ok) card.remove(); });
     });
 
     var bar = document.createElement("div"); bar.className = "row2";
@@ -322,16 +349,23 @@
         var u = r._get();
         if (u.room) uses.push(u);
       });
-      var problems = conflictsFor(uses, w, name.value.trim() || "this ward");
-      if (problems.length) {
-        msg.className = "msg err";
-        msg.textContent = "Not saved — fix these first:\n" + problems.join("\n");
-        return;
-      }
-      w.name = name.value.trim(); w.bishop = bishop.value.trim();
-      w.sacrament = sac.value.trim(); w.color = color.value;
-      w.uses = uses;
-      save("Rooms: " + w.name, msg, saveBtn);
+      var newName = name.value.trim() || "this ward";
+      saveWith("Rooms: " + newName, msg, saveBtn, function (fresh) {
+        var problems = conflictsFor(fresh, uses, origName, newName);
+        if (problems.length)
+          return "Not saved — fix these first:\n" + problems.join("\n");
+        var stF = findStake(fresh, stake.name);
+        if (!stF) return "Could not find the " + stake.name + " — reload this page.";
+        var newW = {name: name.value.trim(), bishop: bishop.value.trim(),
+                    sacrament: sac.value.trim(), color: color.value, uses: uses};
+        var idx = -1;
+        for (var i = 0; i < stF.wards.length; i++)
+          if (stF.wards[i].name === origName) idx = i;
+        if (idx >= 0) stF.wards[idx] = newW; else stF.wards.push(newW);
+        return null;
+      }).then(function (ok) {
+        if (ok) origName = name.value.trim();
+      });
     });
 
     return card;
@@ -340,8 +374,9 @@
   function build() {
     document.getElementById("note").value = data.note || "";
     document.getElementById("savenote").addEventListener("click", function () {
-      data.note = document.getElementById("note").value.trim();
-      save("Rooms notice", document.getElementById("notemsg"), this);
+      var v = document.getElementById("note").value.trim();
+      saveWith("Rooms notice", document.getElementById("notemsg"), this,
+        function (fresh) { fresh.note = v; return null; });
     });
 
     var dl = document.getElementById("roomlist");
