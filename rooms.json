@@ -339,7 +339,7 @@
     {
      "name": "57th Ward",
      "bishop": "Webb",
-     "color": "#7aa5d8",
+     "color": "#b47dd9",
      "sacrament": "12:45 PM",
      "uses": [
       {
@@ -385,16 +385,22 @@
        "what": "RS1"
       },
       {
-       "room": "2260A/B",
-       "start": "14:15",
-       "end": "14:45",
-       "what": "SS1"
-      },
-      {
        "room": "2267A/B",
        "start": "13:45",
        "end": "14:15",
        "what": "EQ1"
+      },
+      {
+       "room": "2277A/B",
+       "start": "13:45",
+       "end": "14:15",
+       "what": "RS2"
+      },
+      {
+       "room": "2260A/B",
+       "start": "14:15",
+       "end": "14:45",
+       "what": "SS1"
       },
       {
        "room": "2267A/B",
@@ -407,12 +413,6 @@
        "start": "14:15",
        "end": "14:45",
        "what": "SS3"
-      },
-      {
-       "room": "2277A/B",
-       "start": "13:45",
-       "end": "14:15",
-       "what": "RS2"
       },
       {
        "room": "2277A/B",
