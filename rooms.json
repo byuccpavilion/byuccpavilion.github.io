@@ -215,6 +215,12 @@
        "start": "11:00",
        "end": "13:30",
        "what": "Interviews"
+      },
+      {
+       "room": "1164A/B",
+       "start": "12:00",
+       "end": "13:30",
+       "what": "Interviews"
       }
      ]
     },
