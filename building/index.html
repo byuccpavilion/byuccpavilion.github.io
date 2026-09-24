@@ -80,6 +80,12 @@
     vertical-align: top; border-radius: 0; }
   table.grid td.block b { display: block; font-weight: 600; }
   table.grid td.clash { outline: 2px solid #c9302c; outline-offset: -2px; }
+  #pop { position: fixed; z-index: 10; background: var(--card);
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.3); max-width: 280px; font-size: 14px; }
+  #pop .r { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+  #pop .it { display: flex; gap: 7px; align-items: baseline; padding: 2px 0; }
+  #pop b { font-weight: 600; }
 </style>
 </head>
 <body>
@@ -109,6 +115,7 @@
   <div id="byward" hidden></div>
   <div id="byroom" hidden></div>
   <div id="bygrid" hidden></div>
+  <div id="pop" hidden></div>
 
   <p class="foot">Pavilion &amp; patio reservations are separate:
     <a href="../">the pavilion calendar</a>.</p>
@@ -279,6 +286,34 @@
     }
   }
 
+  function showPop(cell, roomId, seg) {
+    var pop = document.getElementById("pop");
+    pop.textContent = "";
+    pop.appendChild(el("div", "r", "Room " + roomId));
+    seg.items.forEach(function (u) {
+      var it = el("div", "it");
+      it.appendChild(chip(u.color));
+      var span = document.createElement("span");
+      var b = el("b", "", u.ward); span.appendChild(b);
+      span.appendChild(document.createTextNode(" · " + range(u.start, u.end) +
+        (u.what ? " · " + u.what : "")));
+      it.appendChild(span);
+      pop.appendChild(it);
+    });
+    if (seg.clash) pop.appendChild(el("div", "conflict", "CONFLICT — these overlap"));
+    pop.hidden = false;
+    var r = cell.getBoundingClientRect();
+    var pw = pop.offsetWidth, ph = pop.offsetHeight;
+    var x = Math.min(Math.max(8, r.left), window.innerWidth - pw - 8);
+    var y = r.top - ph - 6;
+    if (y < 8) y = Math.min(r.bottom + 6, window.innerHeight - ph - 8);
+    pop.style.left = x + "px"; pop.style.top = y + "px";
+  }
+
+  document.addEventListener("click", function () {
+    document.getElementById("pop").hidden = true;
+  });
+
   function textOn(bg) {
     var m = bg.replace("#", "");
     if (m.length === 3) m = m[0]+m[0]+m[1]+m[1]+m[2]+m[2];
@@ -370,9 +405,10 @@
             td.appendChild(b);
           });
           if (seg.clash) td.appendChild(el("b", "", "CONFLICT"));
-          td.title = seg.items.map(function (u) {
-            return u.ward + " " + range(u.start, u.end) + (u.what ? " — " + u.what : "");
-          }).join("; ");
+          td.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            showPop(td, id, seg);
+          });
           tr.appendChild(td);
         } else {
           tr.appendChild(el("td", "slot", ""));
