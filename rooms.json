@@ -221,8 +221,8 @@
     {
      "name": "56th Ward",
      "bishop": "Nielson",
-     "color": "#eba064",
      "sacrament": "10:15 AM",
+     "color": "#eba064",
      "uses": [
       {
        "room": "1195",
@@ -232,7 +232,7 @@
       },
       {
        "room": "2260",
-       "start": "10:00",
+       "start": "10:15",
        "end": "11:15",
        "what": "Sacrament meeting"
       },
