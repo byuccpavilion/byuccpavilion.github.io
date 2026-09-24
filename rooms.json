@@ -688,8 +688,8 @@
     {
      "name": "44th Ward",
      "bishop": "Murphy",
-     "color": "#57ff73",
      "sacrament": "12:00 PM",
+     "color": "#57ff73",
      "uses": [
       {
        "room": "1159",
@@ -725,7 +725,7 @@
        "room": "1159",
        "start": "14:30",
        "end": "16:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
