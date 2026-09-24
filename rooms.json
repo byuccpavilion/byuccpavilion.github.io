@@ -339,8 +339,8 @@
     {
      "name": "57th Ward",
      "bishop": "Webb",
-     "color": "#b47dd9",
      "sacrament": "12:45 PM",
+     "color": "#b47dd9",
      "uses": [
       {
        "room": "2279",
@@ -374,7 +374,7 @@
       },
       {
        "room": "2260",
-       "start": "12:30",
+       "start": "12:45",
        "end": "13:45",
        "what": "Sacrament meeting"
       },
