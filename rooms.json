@@ -556,8 +556,8 @@
     {
      "name": "74th Ward",
      "bishop": "Price",
-     "color": "#ff5c5c",
      "sacrament": "10:30 AM",
+     "color": "#ff5c5c",
      "uses": [
       {
        "room": "1179",
@@ -593,7 +593,7 @@
        "room": "1179",
        "start": "12:30",
        "end": "16:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
