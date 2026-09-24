@@ -157,16 +157,10 @@
      "sacrament": "9:00 AM",
      "uses": [
       {
-       "room": "2269A/B",
-       "start": "8:00",
-       "end": "8:45",
-       "what": "Bishopric"
-      },
-      {
        "room": "1171",
        "start": "8:00",
        "end": "8:45",
-       "what": "Ward Council"
+       "what": "Bishopric/Ward Council"
       },
       {
        "room": "2260A/B",
