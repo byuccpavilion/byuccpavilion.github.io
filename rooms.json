@@ -271,7 +271,7 @@
     {
      "name": "46th Ward",
      "bishop": "Cahoon",
-     "color": "#9aa0a6",
+     "color": "#3d9eff",
      "sacrament": "11:30 AM",
      "uses": [
       {
@@ -305,16 +305,16 @@
        "what": "EQ1"
       },
       {
-       "room": "2267A/B",
-       "start": "13:00",
-       "end": "13:30",
-       "what": "SS1"
-      },
-      {
        "room": "2277A/B",
        "start": "12:30",
        "end": "13:00",
        "what": "RS1 and 2"
+      },
+      {
+       "room": "2267A/B",
+       "start": "13:00",
+       "end": "13:30",
+       "what": "SS1"
       },
       {
        "room": "2277A/B",
