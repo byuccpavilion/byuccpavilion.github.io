@@ -442,8 +442,8 @@
     {
      "name": "52nd Ward",
      "bishop": "Chenn",
-     "color": "#d0b658",
      "sacrament": "9:00 AM",
+     "color": "#d0b658",
      "uses": [
       {
        "room": "1189",
@@ -473,7 +473,7 @@
        "room": "1159",
        "start": "11:00",
        "end": "14:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
