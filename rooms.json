@@ -518,8 +518,8 @@
     {
      "name": "73rd Ward",
      "bishop": "Dial",
-     "color": "#e67e22",
      "sacrament": "9:00 AM",
+     "color": "#e67e22",
      "uses": [
       {
        "room": "1172",
@@ -549,7 +549,7 @@
        "room": "1161",
        "start": "11:00",
        "end": "14:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
