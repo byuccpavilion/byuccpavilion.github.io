@@ -153,8 +153,8 @@
     {
      "name": "76th Ward",
      "bishop": "Daines",
-     "color": "#8fbe88",
      "sacrament": "9:00 AM",
+     "color": "#8fbe88",
      "uses": [
       {
        "room": "1171",
