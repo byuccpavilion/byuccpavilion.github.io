@@ -13,7 +13,7 @@
      "info": ""
     },
     {
-     "id": "2260A/B",
+     "id": "2260",
      "info": ""
     },
     {
@@ -21,19 +21,19 @@
      "info": "RS room, seats 82"
     },
     {
-     "id": "2267A/B",
+     "id": "2267",
      "info": ""
     },
     {
-     "id": "2269A/B",
+     "id": "2269",
      "info": ""
     },
     {
-     "id": "2277A/B",
+     "id": "2277",
      "info": ""
     },
     {
-     "id": "2279A/B",
+     "id": "2279",
      "info": ""
     },
     {
@@ -62,7 +62,7 @@
      "info": ""
     },
     {
-     "id": "1164A/B",
+     "id": "1164",
      "info": ""
     },
     {
@@ -163,49 +163,49 @@
        "what": "Bishopric/Ward Council"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "9:00",
        "end": "10:00",
        "what": "Sacrament meeting"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "10:00",
        "end": "10:30",
        "what": "SS1"
       },
       {
-       "room": "2269A/B",
+       "room": "2269",
        "start": "10:00",
        "end": "10:30",
        "what": "Interviews"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "10:00",
        "end": "10:30",
        "what": "SS2"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "10:30",
        "end": "11:00",
        "what": "RS1"
       },
       {
-       "room": "2269A/B",
+       "room": "2269",
        "start": "10:30",
        "end": "11:00",
        "what": "Interviews"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "10:30",
        "end": "11:00",
        "what": "EQ1"
       },
       {
-       "room": "1164A/B",
+       "room": "1164",
        "start": "11:00",
        "end": "12:00",
        "what": "Temple Prep/Mission Prep"
@@ -217,7 +217,7 @@
        "what": "Interviews"
       },
       {
-       "room": "1164A/B",
+       "room": "1164",
        "start": "12:00",
        "end": "13:30",
        "what": "Interviews"
@@ -237,31 +237,31 @@
        "what": "Meetings"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "10:00",
        "end": "11:15",
        "what": "Sacrament meeting"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "11:15",
        "end": "11:45",
        "what": "EQ1"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "11:15",
        "end": "11:45",
        "what": "RS2"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "11:45",
        "end": "12:15",
        "what": "SS1"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "11:45",
        "end": "12:15",
        "what": "SS3"
@@ -281,13 +281,13 @@
      "sacrament": "11:30 AM",
      "uses": [
       {
-       "room": "2279A/B",
+       "room": "2279",
        "start": "10:00",
        "end": "11:00",
        "what": "Mission & temple"
       },
       {
-       "room": "1164A/B",
+       "room": "1164",
        "start": "10:00",
        "end": "11:00",
        "what": "Ward Council"
@@ -299,37 +299,37 @@
        "what": "Bishopric"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "11:15",
        "end": "12:30",
        "what": "Sacrament meeting"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "12:30",
        "end": "13:00",
        "what": "EQ1"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "12:30",
        "end": "13:00",
        "what": "RS1 and 2"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "13:00",
        "end": "13:30",
        "what": "SS1"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "13:00",
        "end": "13:30",
        "what": "SS2"
       },
       {
-       "room": "1164A/B",
+       "room": "1164",
        "start": "13:30",
        "end": "15:30",
        "what": "Interviews"
@@ -349,7 +349,7 @@
      "sacrament": "12:45 PM",
      "uses": [
       {
-       "room": "2279A/B",
+       "room": "2279",
        "start": "8:45",
        "end": "10:00",
        "what": "Interviews"
@@ -373,67 +373,67 @@
        "what": "RS & EQ presidencies"
       },
       {
-       "room": "2269A/B",
+       "room": "2269",
        "start": "11:15",
        "end": "12:15",
        "what": "Ward Council"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "12:30",
        "end": "13:45",
        "what": "Sacrament meeting"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "13:45",
        "end": "14:15",
        "what": "RS1"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "13:45",
        "end": "14:15",
        "what": "EQ1"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "13:45",
        "end": "14:15",
        "what": "RS2"
       },
       {
-       "room": "2260A/B",
+       "room": "2260",
        "start": "14:15",
        "end": "14:45",
        "what": "SS1"
       },
       {
-       "room": "2267A/B",
+       "room": "2267",
        "start": "14:15",
        "end": "14:45",
        "what": "SS2"
       },
       {
-       "room": "2269A/B",
+       "room": "2269",
        "start": "14:15",
        "end": "14:45",
        "what": "SS3"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "14:15",
        "end": "14:45",
        "what": "SS4"
       },
       {
-       "room": "2269A/B",
+       "room": "2269",
        "start": "14:45",
        "end": "16:00",
        "what": "Interviews"
       },
       {
-       "room": "2277A/B",
+       "room": "2277",
        "start": "14:45",
        "end": "16:00",
        "what": "Interviews"
