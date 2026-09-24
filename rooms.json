@@ -858,14 +858,14 @@
     {
      "name": "77th Ward",
      "bishop": "Broadbent",
-     "color": "#e0a878",
      "sacrament": "1:30 PM",
+     "color": "#e0a878",
      "uses": [
       {
        "room": "1181",
        "start": "8:30",
        "end": "12:00",
-       "what": ""
+       "what": "Interviews"
       },
       {
        "room": "1187",
