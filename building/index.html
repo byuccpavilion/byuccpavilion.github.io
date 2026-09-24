@@ -61,6 +61,25 @@
   @media (prefers-color-scheme: dark) {
     .confcard h3, .conflict { color: #f1a5a5; }
   }
+  .gridwrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px;
+              background: var(--card); }
+  table.grid { border-collapse: separate; border-spacing: 0; }
+  table.grid th.roomh { position: sticky; top: 0; z-index: 2; background: var(--head-bg);
+    font-size: 13px; padding: 6px 8px; text-align: left; white-space: nowrap;
+    border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
+    color: var(--heading); }
+  table.grid .timec { position: sticky; left: 0; z-index: 1; background: var(--head-bg);
+    font-size: 12px; color: var(--muted); padding: 0 8px; white-space: nowrap;
+    text-align: right; border-right: 1px solid var(--border); vertical-align: top;
+    font-variant-numeric: tabular-nums; }
+  table.grid th.corner { z-index: 3; }
+  table.grid td.slot { min-width: 88px; height: 14px; padding: 0;
+    border-right: 1px solid var(--border); }
+  table.grid tr.h td, table.grid tr.h .timec { border-bottom: 1px solid var(--border); }
+  table.grid td.block { font-size: 12px; line-height: 1.25; padding: 3px 5px;
+    vertical-align: top; border-radius: 0; }
+  table.grid td.block b { display: block; font-weight: 600; }
+  table.grid td.clash { outline: 2px solid #c9302c; outline-offset: -2px; }
 </style>
 </head>
 <body>
@@ -83,11 +102,13 @@
   <div class="tabs">
     <button id="tabward" class="on" type="button">By ward</button>
     <button id="tabroom" type="button">By room</button>
+    <button id="tabgrid" type="button">Grid</button>
   </div>
 
   <p id="status">Loading&hellip;</p>
   <div id="byward" hidden></div>
   <div id="byroom" hidden></div>
+  <div id="bygrid" hidden></div>
 
   <p class="foot">Pavilion &amp; patio reservations are separate:
     <a href="../">the pavilion calendar</a>.</p>
@@ -258,14 +279,121 @@
     }
   }
 
-  function tabs() {
-    var tw = document.getElementById("tabward"), tr = document.getElementById("tabroom");
-    var vw = document.getElementById("byward"), vr = document.getElementById("byroom");
-    tw.addEventListener("click", function () {
-      tw.className = "on"; tr.className = ""; vw.hidden = false; vr.hidden = true;
+  function textOn(bg) {
+    var m = bg.replace("#", "");
+    if (m.length === 3) m = m[0]+m[0]+m[1]+m[1]+m[2]+m[2];
+    var r = parseInt(m.slice(0,2),16), g = parseInt(m.slice(2,4),16), b = parseInt(m.slice(4,6),16);
+    return (r*299 + g*587 + b*114) / 1000 > 140 ? "#1c2733" : "#ffffff";
+  }
+
+  function renderGrid(data) {
+    var START = 7 * 60, END = 16 * 60 + 30, STEP = 15;
+    // rooms in listed order, but only the ones something uses
+    var byroom = {};
+    data.stakes.forEach(function (st) {
+      st.wards.forEach(function (w) {
+        w.uses.forEach(function (u) {
+          (byroom[u.room] = byroom[u.room] || []).push(
+            {s: mins(u.start), e: mins(u.end), ward: w.name, what: u.what,
+             color: w.color, start: u.start, end: u.end});
+        });
+      });
     });
-    tr.addEventListener("click", function () {
-      tr.className = "on"; tw.className = ""; vr.hidden = false; vw.hidden = true;
+    var cols = [];
+    data.rooms.forEach(function (g) {
+      g.list.forEach(function (r) { if (byroom[r.id]) cols.push(r.id); });
+    });
+    Object.keys(byroom).sort().forEach(function (id) {
+      if (cols.indexOf(id) < 0) cols.push(id);
+    });
+
+    // per room: merge overlapping uses into one cell so the grid stays a grid
+    var segs = {};
+    cols.forEach(function (id) {
+      var list = byroom[id].sort(function (a, b) { return a.s - b.s; });
+      var out = [];
+      list.forEach(function (u) {
+        var last = out[out.length - 1];
+        if (last && u.s < last.e) {
+          last.e = Math.max(last.e, u.e);
+          last.items.push(u); last.clash = true;
+        } else {
+          out.push({s: u.s, e: u.e, items: [u], clash: false});
+        }
+      });
+      segs[id] = out;
+    });
+
+    function shortWard(n) {
+      return n === "Any ward (shared)" ? "Shared" : n.replace(" Ward", "");
+    }
+
+    var wrapDiv = el("div", "gridwrap");
+    var table = el("table", "grid");
+    var thead = document.createElement("thead");
+    var hr = document.createElement("tr");
+    var corner = el("th", "roomh timec corner", "");
+    hr.appendChild(corner);
+    cols.forEach(function (id) { hr.appendChild(el("th", "roomh", id)); });
+    thead.appendChild(hr); table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    var covered = {};   // room -> slots already spanned
+    cols.forEach(function (id) { covered[id] = {}; });
+    for (var m = START; m < END; m += STEP) {
+      var tr = document.createElement("tr");
+      if ((m + STEP) % 60 === 0) tr.className = "h";
+      var t = Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0");
+      var lab = (m % 30 === 0) ? fmt(t).replace(":00", "") : "";
+      tr.appendChild(el("td", "timec", lab));
+      cols.forEach(function (id) {
+        if (covered[id][m]) return;
+        var seg = null;
+        segs[id].forEach(function (g) { if (g.s === m || (g.s < m && m === START && g.e > m)) seg = seg || g; });
+        // a segment starting before the visible window still needs a cell
+        if (!seg) segs[id].forEach(function (g) { if (g.s === m) seg = g; });
+        if (seg) {
+          var from = Math.max(seg.s, START);
+          if (from !== m) { seg = null; }
+        }
+        if (seg) {
+          var to = Math.min(seg.e, END);
+          var span = Math.ceil((to - m) / STEP);
+          for (var k = m; k < to; k += STEP) covered[id][k] = true;
+          var td = el("td", "slot block" + (seg.clash ? " clash" : ""));
+          td.rowSpan = span;
+          var one = seg.items[0];
+          td.style.background = seg.clash ? "#f3d1d1" : one.color;
+          td.style.color = seg.clash ? "#7a1d1d" : textOn(one.color);
+          seg.items.forEach(function (u) {
+            var b = el("b", "", shortWard(u.ward) + (u.what ? " · " + u.what : ""));
+            td.appendChild(b);
+          });
+          if (seg.clash) td.appendChild(el("b", "", "CONFLICT"));
+          td.title = seg.items.map(function (u) {
+            return u.ward + " " + range(u.start, u.end) + (u.what ? " — " + u.what : "");
+          }).join("; ");
+          tr.appendChild(td);
+        } else {
+          tr.appendChild(el("td", "slot", ""));
+        }
+      });
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    wrapDiv.appendChild(table);
+    document.getElementById("bygrid").appendChild(wrapDiv);
+  }
+
+  function tabs() {
+    var btns = [["tabward", "byward"], ["tabroom", "byroom"], ["tabgrid", "bygrid"]];
+    btns.forEach(function (pair) {
+      document.getElementById(pair[0]).addEventListener("click", function () {
+        btns.forEach(function (q) {
+          document.getElementById(q[0]).className = (q[0] === pair[0]) ? "on" : "";
+          document.getElementById(q[1]).hidden = q[1] !== pair[1];
+        });
+      });
     });
   }
 
@@ -288,6 +416,7 @@
       }
       renderByWard(data);
       renderByRoom(data);
+      renderGrid(data);
       tabs();
       document.getElementById("status").hidden = true;
       document.getElementById("byward").hidden = false;
