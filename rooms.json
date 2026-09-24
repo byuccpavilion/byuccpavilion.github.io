@@ -6,7 +6,7 @@
    "list": [
     {
      "id": "2254",
-     "info": "Auditorium"
+     "info": ""
     },
     {
      "id": "2258",
@@ -18,7 +18,7 @@
     },
     {
      "id": "2265",
-     "info": "RS room, seats 82"
+     "info": ""
     },
     {
      "id": "2267",
@@ -38,15 +38,15 @@
     },
     {
      "id": "2285",
-     "info": "EQ room, seats 65"
+     "info": ""
     },
     {
      "id": "2287",
-     "info": "EQ room, seats 50"
+     "info": ""
     },
     {
      "id": "2295",
-     "info": "RS room, seats 82"
+     "info": ""
     }
    ]
   },
@@ -75,7 +75,7 @@
     },
     {
      "id": "1172",
-     "info": "Seats 30"
+     "info": ""
     },
     {
      "id": "1179",
@@ -87,19 +87,19 @@
     },
     {
      "id": "1184",
-     "info": "Seats 65"
+     "info": ""
     },
     {
      "id": "1187",
-     "info": "Seats 32"
+     "info": ""
     },
     {
      "id": "1188",
-     "info": "Overflow, seats 50"
+     "info": ""
     },
     {
      "id": "1189",
-     "info": "Seats 32"
+     "info": ""
     },
     {
      "id": "1193",
@@ -120,7 +120,7 @@
     },
     {
      "id": "Ballroom South A",
-     "info": "Seats ~90"
+     "info": ""
     }
    ]
   },
