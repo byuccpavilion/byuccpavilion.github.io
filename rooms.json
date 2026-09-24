@@ -732,8 +732,8 @@
     {
      "name": "55th Ward",
      "bishop": "Durtschi",
-     "color": "#3fb6c9",
      "sacrament": "12:00 PM",
+     "color": "#3fb6c9",
      "uses": [
       {
        "room": "1161",
@@ -769,7 +769,7 @@
        "room": "1161",
        "start": "14:30",
        "end": "16:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
