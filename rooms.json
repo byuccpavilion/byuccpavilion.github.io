@@ -820,14 +820,14 @@
     {
      "name": "88th Ward",
      "bishop": "Lindquist",
-     "color": "#00bfc2",
      "sacrament": "1:30 PM",
+     "color": "#00bfc2",
      "uses": [
       {
        "room": "1179",
        "start": "9:00",
        "end": "12:00",
-       "what": ""
+       "what": "Interviews"
       },
       {
        "room": "1189",
