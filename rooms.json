@@ -776,8 +776,8 @@
     {
      "name": "47th Ward",
      "bishop": "Miller",
-     "color": "#d9705f",
      "sacrament": "12:00 PM",
+     "color": "#d9705f",
      "uses": [
       {
        "room": "1169",
@@ -813,7 +813,7 @@
        "room": "1169",
        "start": "14:30",
        "end": "16:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
