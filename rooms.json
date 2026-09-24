@@ -644,8 +644,8 @@
     {
      "name": "50th Ward",
      "bishop": "Pack",
-     "color": "#ff8b3d",
      "sacrament": "10:30 AM",
+     "color": "#ff8b3d",
      "uses": [
       {
        "room": "1193",
@@ -681,7 +681,7 @@
        "room": "1193",
        "start": "12:30",
        "end": "16:00",
-       "what": ""
+       "what": "Interviews"
       }
      ]
     },
